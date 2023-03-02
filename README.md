@@ -1,2 +1,2 @@
 # ppt23_benesva7
-pridavam README podle pokynu
+[Běžící stránky](https://benesva7.github.io/ppt23_benesva7/)
