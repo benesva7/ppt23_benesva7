@@ -1,0 +1,54 @@
+﻿@page "/hra"
+
+<h1 class="font-bold text-xl">Ahoj, vítej ve hře</h1>
+<h3>Hádej číslo</h3>
+
+<input class="border-2 border-blue-700" @bind-value="oninput"/>
+
+<button class="p-2 pl-5 pr-5 bg-blue-500 text-gray-100 text-lg rounded-lg focus:border-4 border-blue-300" @onclick="Hadam">
+    Hádat 
+</button>
+
+@*@<p>
+@mysleneCislo
+</p>*@
+
+<p>
+@vysledek <br> @pokyn
+</p>
+
+@code
+{
+    int mysleneCislo =  Random.Shared.Next(1, 101);
+    
+    string? oninput;   
+    string? vysledek;
+    string? pokyn;
+
+    void Hadam()
+    {   
+        vysledek = "";
+        pokyn = "";
+        if (oninput == "znovu")
+            {
+                oninput = "";
+                mysleneCislo = Random.Shared.Next(1, 101);
+            }
+        else if (!int.TryParse(oninput, out int hadaneCislo))
+        {
+        vysledek = "Musíš zadat číslo";
+        }
+    
+        else if (hadaneCislo == mysleneCislo)
+        {
+            vysledek = $"Uhodl jsi, myšlené číslo bylo {mysleneCislo}"; 
+            pokyn = "Pokud chceš hádat znovu, napiš \"znovu\" a stiskni Hádat";  
+        }
+        else
+        {
+        string vetsiNeboMensi = hadaneCislo < mysleneCislo ? "menší" : "větší";
+        vysledek = $"Tvoje číslo je {vetsiNeboMensi} než myšlené číslo";
+        }   
+    }  
+}
+
