@@ -29,7 +29,7 @@ jobs:
 
     # změní tag base v index.html from '/' na 'ppt_22' což je gh page k tomuto repu
     - name: Change base-tag in index.html from to your gh repo
-      run: sed -i 's/<base href="\/" \/>/<base href="\/ppt_23_benesva7\/" \/>/g' ${{env.PUBLISH_DIR}}/wwwroot/index.html
+      run: sed -i 's/<base href="\/" \/>/<base href="\/ppt23_benesva7\/" \/>/g' ${{env.PUBLISH_DIR}}/wwwroot/index.html
       # ☝️ Upravte  dle názvu vašeho repozitáře
 
       
