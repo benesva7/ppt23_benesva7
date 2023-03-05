@@ -1,13 +1,14 @@
 ﻿@page "/hra"
 
+<div class="text-center my-80">
 <h1 class="font-bold text-xl">Ahoj, vítej ve hře</h1>
 <h3>Hádej číslo</h3>
 
 <input class="border-2 border-blue-700" @bind-value="oninput"/>
 
 <button class="p-2 pl-5 pr-5 bg-blue-500 text-gray-100 text-lg rounded-lg focus:border-4 border-blue-300" @onclick="Hadam">
-    Hádat 
-</button>
+    Hádat
+    </button>
 
 @*@<p>
 @mysleneCislo
@@ -16,7 +17,7 @@
 <p>
 @vysledek <br> @pokyn
 </p>
-
+</div>
 @code
 {
     int mysleneCislo =  Random.Shared.Next(1, 101);
