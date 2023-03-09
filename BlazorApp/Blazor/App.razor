@@ -4,9 +4,9 @@
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
+        <PageTitle>Nenalezeno</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
+            <div class="flex items-center justify-center h-screen" role="alert">Hledaná stránka neexistuje, použij HOME pro návrat na hlavní stránku</div>
         </LayoutView>
     </NotFound>
 </Router>

@@ -1,9 +1,61 @@
-﻿@page "/vybaveni_nemocnice"
+﻿@page "/vybaveni"
+@using Blazor.Components
+@using Blazor.ViewModels
 
-<div class="flex h-screen items-center justify-center w-full font-sans text-xl">
-<h1>Vítej v nemocnici!</h1>
+<div class="flex justify-center w-full font-sans text-xl">
+Vítej v nemocnici!
 </div>
+
+
+
+
+<div> pocet vybaveni @seznamVybaveni.Count</div>
+
+
+
+<button>
+    Pridej nahodne vybaveni
+</button>
+<div class="grid grid-cols-5 border-b-2 border-black ">
+    <div class=" w-full h-full">Název</div>
+    <div class=" w-full h-full">Datum nákupu</div>
+    <div class=" w-full h-full">Datum poslední revize</div>
+    <div class=" w-full h-full">Potřebuje revizi?</div>
+</div>
+<div class="grid grid-cols-6 grid">
+    
+    @foreach (VybaveniVm vyb in seznamVybaveni)
+    {
+
+        <VybaveRow Vyb="vyb"  SmazEventCallback="() => seznamVybaveni.Remove(vyb)" >
+
+        </VybaveRow>
+        <VybaveRow Vyb="vyb" RevizeEventCallback="() => vyb.lastRevisionDateTime=DateTime.Now">
+
+        </VybaveRow>
+
+    }
+</div>
+
+
 
 @code {
 
+    List<VybaveniVm> seznamVybaveni;
+
+    public Vybaveni_nemocnice()
+    {
+        seznamVybaveni = VybaveniVm.VratRandSeznam(20);
+        //seznamVybaveni[0].IsNameJack = false;
+    }
+
+    //void smazat(VybaveniVm vyb)
+    //{
+    //    seznamVybaveni.Remove(vyb);
+
+    //}
+
+
+
 }
+

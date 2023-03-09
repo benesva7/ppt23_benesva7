@@ -1,0 +1,19 @@
+﻿@using Blazor.ViewModels
+<div>@Vyb.name</div>
+<div>@Vyb.boughtDateTime.ToString("yyyy-MM-dd")</div>
+<div>@Vyb.lastRevisionDateTime.ToString("yyyy-MM-dd")</div>
+<div>@Vyb.IsRevisionNeeded</div>
+<div>
+    <button @onclick="() => SmazEventCallback.InvokeAsync()">Smazat</button>
+</div>
+<div>
+    <button @onclick="() => RevizeEventCallback.InvokeAsync()">Provést revizi</button>
+</div>
+
+@code {
+    [Parameter] public VybaveniVm Vyb { get; set; }
+    [Parameter] public EventCallback SmazEventCallback { get; set; }
+    [Parameter] public EventCallback RevizeEventCallback{ get; set; }
+    
+    
+}
