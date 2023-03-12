@@ -5,36 +5,31 @@
 <div class="flex justify-center w-full font-sans text-xl">
 Vítej v nemocnici!
 </div>
-
-
-
-
-<div> pocet vybaveni @seznamVybaveni.Count</div>
-
-
-
-<button>
-    Pridej nahodne vybaveni
+<div class="p-4">
+    pocet vybaveni @seznamVybaveni.Count<br>
+<button class="bg-green-500 rounded-md p-1" @onclick="noveVybaveni">
+    Resetuj seznam nahodneho vybaveni
 </button>
-<div class="grid grid-cols-5 border-b-2 border-black ">
+
+<div class="grid grid-cols-5 border-b-2 border-black font-bold">
     <div class=" w-full h-full">Název</div>
     <div class=" w-full h-full">Datum nákupu</div>
     <div class=" w-full h-full">Datum poslední revize</div>
     <div class=" w-full h-full">Potřebuje revizi?</div>
 </div>
-<div class="grid grid-cols-6 grid">
+<div class="">
     
     @foreach (VybaveniVm vyb in seznamVybaveni)
     {
-
-        <VybaveRow Vyb="vyb"  SmazEventCallback="() => seznamVybaveni.Remove(vyb)" >
+        <div class="grid grid-cols-5 my-1 @((vyb.IsRevisionNeeded == "Ano") ? "bg-red-400" : "")">
+        <VybaveRow Vyb="vyb"  
+            SmazEventCallback="() => seznamVybaveni.Remove(vyb)" 
+            RevizeEventCallback="() => vyb.lastRevisionDateTime=DateTime.Now">
 
         </VybaveRow>
-        <VybaveRow Vyb="vyb" RevizeEventCallback="() => vyb.lastRevisionDateTime=DateTime.Now">
-
-        </VybaveRow>
-
+        </div>
     }
+</div>
 </div>
 
 
@@ -45,15 +40,14 @@ Vítej v nemocnici!
 
     public Vybaveni_nemocnice()
     {
-        seznamVybaveni = VybaveniVm.VratRandSeznam(20);
-        //seznamVybaveni[0].IsNameJack = false;
+        seznamVybaveni = VybaveniVm.VratRandSeznam(15);
     }
-
-    //void smazat(VybaveniVm vyb)
-    //{
-    //    seznamVybaveni.Remove(vyb);
-
-    //}
+    public void noveVybaveni()
+    {
+        seznamVybaveni.Clear();
+        seznamVybaveni = VybaveniVm.VratRandSeznam(15);
+    }
+   
 
 
 
