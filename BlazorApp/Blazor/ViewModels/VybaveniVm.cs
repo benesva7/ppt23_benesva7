@@ -14,7 +14,7 @@ namespace Blazor.ViewModels
         public int Price { get; set; }
         public DateTime BoughtDateTime { get; set; }
         public DateTime LastRevisionDateTime { get; set; }
-        public bool IsRevisionNeeded { get => LastRevisionDateTime < DateTime.Now.AddYears(-2);}
+        public bool IsRevisionNeeded { get => LastRevisionDateTime > DateTime.Now.AddYears(-2);}
         public bool IsInEditMode { get; set; }
 
         public VybaveniVm(string Name,int Price, DateTime BoughtDateTime, DateTime LastRevisionDateTime)
@@ -38,6 +38,7 @@ namespace Blazor.ViewModels
         public VybaveniVm Copy()
         {
             VybaveniVm to = new(Name, Price, BoughtDateTime, LastRevisionDateTime);
+            to.IsInEditMode = IsInEditMode;
             return to;
         }
         public void MapTo(VybaveniVm? to)
