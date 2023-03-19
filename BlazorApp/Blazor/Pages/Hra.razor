@@ -6,7 +6,7 @@
 
 <input class="border-2 border-blue-700" @bind-value="oninput"/>
 
-<button class="p-2 pl-5 pr-5 bg-blue-500 text-gray-100 text-lg rounded-lg focus:border-4 border-blue-300" @onclick="Hadam">
+<button class="p-2 pl-5 pr-5 bg-blue-500 text-gray-100 text-lg rounded-lg " @onclick="Hadam">
     Hádat
     </button>
 
@@ -34,21 +34,22 @@
             {
                 oninput = "";
                 mysleneCislo = Random.Shared.Next(1, 101);
+                vysledek = "Vygenerováno nové číslo, můžeš hádat znovu.";
             }
         else if (!int.TryParse(oninput, out int hadaneCislo))
         {
-        vysledek = "Musíš zadat číslo";
+        vysledek = "Musíš zadat číslo.";
         }
     
         else if (hadaneCislo == mysleneCislo)
         {
-            vysledek = $"Uhodl jsi, myšlené číslo bylo {mysleneCislo}"; 
-            pokyn = "Pokud chceš hádat znovu, napiš \"znovu\" a stiskni Hádat";  
+            vysledek = $"Uhodl jsi, myšlené číslo bylo {mysleneCislo}."; 
+            pokyn = "Pokud chceš hádat znovu, napiš \"znovu\" a stiskni Hádat.";  
         }
-        else
+        else 
         {
         string vetsiNeboMensi = hadaneCislo < mysleneCislo ? "menší" : "větší";
-        vysledek = $"Tvoje číslo je {vetsiNeboMensi} než myšlené číslo";
+        vysledek = $"Tvoje číslo je {vetsiNeboMensi} než myšlené číslo.";
         }   
     }  
 }

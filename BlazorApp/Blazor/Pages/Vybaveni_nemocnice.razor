@@ -3,33 +3,42 @@
 @using Blazor.ViewModels
 
 <div class="flex justify-center w-full font-sans text-xl">
-Vítej v nemocnici!
+    Vítej v nemocnici!
 </div>
-<div class="p-4">
-    pocet vybaveni @seznamVybaveni.Count<br>
-<button class="bg-green-500 rounded-md p-1" @onclick="noveVybaveni">
-    Resetuj seznam nahodneho vybaveni
-</button>
+<div class="p-4 ">
+    <div>Počet vybavení: @seznamVybaveni.Count</div>
+    <div>
+        <button class="bg-green-500 rounded-md p-1" @onclick="noveVybaveni">
+            Nový seznam
+        </button>
+    </div>
+    <div>
+        <p>Pro přidání předmetů do seznamu zadejte počet předmětů a potvrďte tlačítkem "Přidat"</p>
+        <input class="border-2 border-blue-700" type="text" @bind-value=@oninput />
+        <button class="bg-green-500 rounded-md p-1 mx-2" @onclick="pridatVybaveni">
+            Přidat
+        </button>@error
+    </div>
 
-<div class="grid grid-cols-5 border-b-2 border-black font-bold">
-    <div class=" w-full h-full">Název</div>
-    <div class=" w-full h-full">Datum nákupu</div>
-    <div class=" w-full h-full">Datum poslední revize</div>
-    <div class=" w-full h-full">Potřebuje revizi?</div>
-</div>
-<div class="">
-    
-    @foreach (VybaveniVm vyb in seznamVybaveni)
-    {
-        <div class="grid grid-cols-5 my-1 @((vyb.IsRevisionNeeded == "Ano") ? "bg-red-400" : "")">
-        <VybaveRow Vyb="vyb"  
-            SmazEventCallback="() => seznamVybaveni.Remove(vyb)" 
-            RevizeEventCallback="() => vyb.lastRevisionDateTime=DateTime.Now">
+    <div class="grid grid-cols-6 border-b-2 border-black font-bold">
+        <div class=" w-full h-full">Název</div>
+        <div class=" w-full h-full">Cena(Kč)</div>
+        <div class=" w-full h-full">Datum nákupu</div>
+        <div class=" w-full h-full">Datum poslední revize</div>
+        <div class=" w-full h-full">Potřebuje revizi?</div>
+    </div>
+    <div>
 
-        </VybaveRow>
-        </div>
-    }
-</div>
+        @foreach (VybaveniVm vyb in seznamVybaveni)
+        {
+            <div class="grid grid-cols-6 my-1 @((vyb.IsRevisionNeeded) ? "bg-red-400" : "")">
+                <VybaveRow Vyb="vyb"
+                       SmazEventCallback="() => seznamVybaveni.Remove(vyb)"
+                       RevizeEventCallback="() => vyb.LastRevisionDateTime=DateTime.Now">
+                </VybaveRow>    
+            </div>
+        }
+    </div>
 </div>
 
 
@@ -37,6 +46,8 @@ Vítej v nemocnici!
 @code {
 
     List<VybaveniVm> seznamVybaveni;
+    string? oninput;
+    string? error;
 
     public Vybaveni_nemocnice()
     {
@@ -47,7 +58,28 @@ Vítej v nemocnici!
         seznamVybaveni.Clear();
         seznamVybaveni = VybaveniVm.VratRandSeznam(15);
     }
-   
+    public void pridatVybaveni()
+    {
+        error = "";
+        if (!int.TryParse(oninput, out int pocet))
+        {
+            error = "Musíš zadat celé číslo.";
+        }
+        else if (pocet < 0)
+        {
+            error = "Zadat lze pouze nezáporné číslo.";
+        }
+        else
+        {
+            List<VybaveniVm> List = VybaveniVm.VratRandSeznam(pocet);
+            for (int i = 0; i < List.Count; i++)
+            {
+                seznamVybaveni.Add(List[i]);
+            }
+        }
+
+    }
+
 
 
 

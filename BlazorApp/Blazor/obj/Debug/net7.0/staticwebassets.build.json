@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "eFfd3UMerqcv549bHzmSBg5j0902CpfhlkwxQCxHQVk=",
+  "Hash": "WKsVWzZm+p8Uo5wqz/6rbzId3Gb7gL/70KfOIuOFPPk=",
   "Source": "Blazor",
   "BasePath": "/",
   "Mode": "Root",
@@ -136,23 +136,6 @@
       "OriginalItemSpec": "C:\\Users\\Uzivatel\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.browser-wasm\\7.0.3\\runtimes\\browser-wasm\\native\\dotnet.wasm"
     },
     {
-      "Identity": "C:\\Users\\Uzivatel\\ppt23_benesva7\\BlazorApp\\Blazor\\bin\\Debug\\net7.0\\wwwroot\\_framework\\icudt.dat",
-      "SourceId": "Blazor",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Uzivatel\\ppt23_benesva7\\BlazorApp\\Blazor\\bin\\Debug\\net7.0\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "_framework/icudt.dat",
-      "AssetKind": "Build",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "BlazorWebAssemblyResource",
-      "AssetTraitValue": "native",
-      "CopyToOutputDirectory": "PreserveNewest",
-      "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\Uzivatel\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.browser-wasm\\7.0.3\\runtimes\\browser-wasm\\native\\icudt.dat"
-    },
-    {
       "Identity": "C:\\Users\\Uzivatel\\ppt23_benesva7\\BlazorApp\\Blazor\\bin\\Debug\\net7.0\\wwwroot\\_framework\\icudt_CJK.dat",
       "SourceId": "Blazor",
       "SourceType": "Computed",
@@ -202,6 +185,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\Uzivatel\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.browser-wasm\\7.0.3\\runtimes\\browser-wasm\\native\\icudt_no_CJK.dat"
+    },
+    {
+      "Identity": "C:\\Users\\Uzivatel\\ppt23_benesva7\\BlazorApp\\Blazor\\bin\\Debug\\net7.0\\wwwroot\\_framework\\icudt.dat",
+      "SourceId": "Blazor",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Uzivatel\\ppt23_benesva7\\BlazorApp\\Blazor\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/icudt.dat",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "native",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\Uzivatel\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.browser-wasm\\7.0.3\\runtimes\\browser-wasm\\native\\icudt.dat"
     },
     {
       "Identity": "C:\\Users\\Uzivatel\\ppt23_benesva7\\BlazorApp\\Blazor\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Authorization.dll",

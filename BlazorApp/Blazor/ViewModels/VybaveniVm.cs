@@ -1,40 +1,56 @@
 ﻿using System.Xml.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Blazor.ViewModels
 {
     public class VybaveniVm
     {
+        [Required(ErrorMessage = "Pole nesmí být prázdné")]
+        [MinLength(5, ErrorMessage = "Délka u pole \"{0}\" musí být alespoň {1} znaků")]
+        [Display(Name = "Název")]
+        public string Name { get; set; } = "";
+        [Required(ErrorMessage = "Pole nesmí být prázdné")]
+        [Range(0, 10000001, ErrorMessage = "Cena musí být mezi 0 až 10,000,000")]
+        public int Price { get; set; }
+        public DateTime BoughtDateTime { get; set; }
+        public DateTime LastRevisionDateTime { get; set; }
+        public bool IsRevisionNeeded { get => LastRevisionDateTime < DateTime.Now.AddYears(-2);}
+        public bool IsInEditMode { get; set; }
 
-
-
-        public string name { get; set; } 
-        public DateTime boughtDateTime { get; set; }
-        public DateTime lastRevisionDateTime { get; set; }
-        public string IsRevisionNeeded
+        public VybaveniVm(string Name,int Price, DateTime BoughtDateTime, DateTime LastRevisionDateTime)
         {
-            get
-            {
-                return (DateTime.Now - lastRevisionDateTime).TotalDays > 730 ? "Ano" : "Ne";
-            }
-        }
 
-        public VybaveniVm(string name, DateTime boughtDateTime, DateTime lastRevisionDateTime)
-        {
-            this.name = name;
-            if (lastRevisionDateTime < boughtDateTime)
+            this.Name = Name;
+            this.Price = Price;
+            this.BoughtDateTime = BoughtDateTime;
+            this.LastRevisionDateTime = LastRevisionDateTime; 
+            if (LastRevisionDateTime < this.BoughtDateTime)
             {
-                this.boughtDateTime = lastRevisionDateTime;
-                this.lastRevisionDateTime = boughtDateTime;
+                this.BoughtDateTime = LastRevisionDateTime;
+                this.LastRevisionDateTime = this.BoughtDateTime;
             }
             else
             {
-                this.boughtDateTime = boughtDateTime;
-                this.lastRevisionDateTime = lastRevisionDateTime;
+                this.BoughtDateTime = this.BoughtDateTime;
+                this.LastRevisionDateTime = LastRevisionDateTime;
             }
         }
-        
+        public VybaveniVm Copy()
+        {
+            VybaveniVm to = new(Name, Price, BoughtDateTime, LastRevisionDateTime);
+            return to;
+        }
+        public void MapTo(VybaveniVm? to)
+        {
+            if (to == null) return;
+            to.Name = Name;
+            to.Price = Price;
+            to.BoughtDateTime = BoughtDateTime;
+            to.LastRevisionDateTime = LastRevisionDateTime;
+        }
 
-            public static List<VybaveniVm> VratRandSeznam(int pocet)
+
+        public static List<VybaveniVm> VratRandSeznam(int pocet)
             {
             // return new List<VybaveniVm>() { new VybaveniVm() { Name = "dkdk" }, new VybaveniVm() { Name = "KDIEI" } };
             List<VybaveniVm> list = new List<VybaveniVm>();
@@ -42,11 +58,12 @@ namespace Blazor.ViewModels
             for (int i = 0; i < pocet; i++)
             {
 
-                string name = RandomString();
-                DateTime boughtDateTime = RandomDay(new DateTime(2000, 1, 1));
-                DateTime lastRevisionDateTime = RandomDay(DateTime.Now.AddYears(-4));
+                string Name = RandomString();
+                int Price = Random.Shared.Next(10000001);
+                DateTime BoughtDateTime = RandomDay(new DateTime(2000, 1, 1));
+                DateTime LastRevisionDateTime = RandomDay(DateTime.Now.AddYears(-4));
 
-                list.Add(new VybaveniVm(name, boughtDateTime, lastRevisionDateTime));
+                list.Add(new VybaveniVm(Name,Price, BoughtDateTime, LastRevisionDateTime));
             }
             return list;
             }
