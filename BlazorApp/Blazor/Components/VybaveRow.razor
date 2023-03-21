@@ -8,7 +8,7 @@
     <div class="py-1.5">@Vyb.BoughtDateTime.ToString("dd-MM-yyyy")</div>
     <div class="py-1.5">@Vyb.LastRevisionDateTime.ToString("dd-MM-yyyy")</div>
     <div class="py-1.5">@((Vyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>
-    <div>
+    <div class="flex justify-center gap-2">
         <!--<button class="bg-red-500 rounded-md p-1" @onclick="() => SmazEventCallback.InvokeAsync()">Smazat</button>-->
         <button class="twbtn bg-red-500 hover:bg-red-600 " @onclick="() => SmazEventCallback.InvokeAsync()">🗙</button>
         <button class="twbtn bg-blue-500 hover:bg-blue-600" @onclick="() => RevizeEventCallback.InvokeAsync()">Provést revizi</button>
@@ -19,14 +19,15 @@ else if (EditVyb != null && EditVyb.IsInEditMode)
 {
     <EditForm class="col-span-6" Model=EditVyb OnValidSubmit="() => TurnOffEdit(true)">
         <DataAnnotationsValidator />
+        <div class="border-2 border-gray-500 p-1">
         <div class="grid grid-cols-6 ">
-            <div class="pt-1">
+            <div class="p-1">
                 <InputText class="border-2 border-gray-400 " @bind-Value=@EditVyb.Name />
-                <ValidationMessage For="() => EditVyb.Name" />
+                
             </div>
             <div class="pt-1">
                 <InputNumber class="border-2 border-gray-400 " @bind-Value=@EditVyb.Price />
-                <ValidationMessage For="() => EditVyb.Price" />
+               
             </div>
             <div class="pt-1">
                 <InputDate class="border-2 border-gray-400 " @bind-Value=@EditVyb.BoughtDateTime />
@@ -34,14 +35,17 @@ else if (EditVyb != null && EditVyb.IsInEditMode)
             </div>
             <div class="pt-1">
                 <InputDate class="border-2 border-gray-400 " @bind-Value=@EditVyb.LastRevisionDateTime />
-
+                
             </div>
             <div class="pt-1.5">@((EditVyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>
-            <div >
+            <div class="flex justify-center gap-2">
                 <button class="twbtn bg-green-500  hover:bg-green-600">Ok</button>
                 <button class="twbtn bg-red-500  hover:bg-red-600" type="button" @onclick="() => TurnOffEdit(false)">Zrušit</button>
             </div>
+         </div>
+            <ValidationSummary />
         </div>
+        
     </EditForm>
 }
 

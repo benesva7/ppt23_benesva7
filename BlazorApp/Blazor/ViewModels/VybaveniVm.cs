@@ -5,14 +5,19 @@ namespace Blazor.ViewModels
 {
     public class VybaveniVm
     {
-        [Required(ErrorMessage = "Pole nesmí být prázdné")]
+        [Required(ErrorMessage = "Pole Název nesmí být prázdné")]
         [MinLength(5, ErrorMessage = "Délka u pole \"{0}\" musí být alespoň {1} znaků")]
         [Display(Name = "Název")]
         public string Name { get; set; } = "";
-        [Required(ErrorMessage = "Pole nesmí být prázdné")]
+        [Required(ErrorMessage = "Pole Cena nesmí být prázdné")]
         [Range(0, 10000001, ErrorMessage = "Cena musí být mezi 0 až 10,000,000")]
         public int Price { get; set; }
+        [Required(ErrorMessage = "Pole Datum nákupu nesmí být prázdné")]
+        [DataType(DataType.Date, ErrorMessage = "Datum nákupu musí být zadán ve správném tvaru")]
         public DateTime BoughtDateTime { get; set; }
+        [Required(ErrorMessage = "Pole Datum poslední revize nesmí být prázdné")]
+        [DataType(DataType.Date, ErrorMessage = "Datum poslední revize musí být zadán ve správném tvaru")]
+        [CustomValidation(typeof(VybaveniVm), nameof(Validation))]
         public DateTime LastRevisionDateTime { get; set; }
         public bool IsRevisionNeeded { get => LastRevisionDateTime < DateTime.Now.AddYears(-2);}
         public bool IsInEditMode { get; set; }
@@ -48,6 +53,17 @@ namespace Blazor.ViewModels
             to.Price = Price;
             to.BoughtDateTime = BoughtDateTime;
             to.LastRevisionDateTime = LastRevisionDateTime;
+        }
+        public static ValidationResult? Validation(DateTime LastRevisionDatetime, ValidationContext validationContext)
+        {
+            var vm = (VybaveniVm)validationContext.ObjectInstance;
+
+            if (LastRevisionDatetime < vm.BoughtDateTime)
+            {
+                return new ValidationResult("Datum poslední revize nesmí předcházet datu zakoupení vybavení.");
+            }
+
+            return ValidationResult.Success;
         }
 
 
