@@ -1,23 +1,26 @@
 ﻿@page "/vybaveni"
 @using Blazor.Components
-@using Blazor.ViewModels
 
-<div class="flex justify-center w-full font-sans text-xl">
-    Vítej v nemocnici!
-</div>
 <div class="p-4 ">
-    <div>Počet vybavení: @seznamVybaveni.Count</div>
+    <div class="grid grid-cols-3 justify-evenly text-center items-center">
     <div>
+    <p>Počet vybavení: @seznamVybaveni.Count</p>
         <button class="bg-green-500 rounded-md p-1" @onclick="noveVybaveni">
             Nový seznam
         </button>
     </div>
     <div>
-        <p>Pro přidání předmětů do seznamu zadejte počet předmětů a potvrďte tlačítkem "Přidat"</p>
+        <p>Pro přidání náhodných předmětů do seznamu zadejte počet předmětů a potvrďte tlačítkem "Přidat náhodné vybavení"</p>
         <input class="border-2 border-blue-700" type="text" @bind-value=@oninput />
-        <button class="bg-green-500 rounded-md p-1 mx-2" @onclick="pridatVybaveni">
-            Přidat
+        <button class="bg-amber-500 rounded-md p-1 mx-2" @onclick="pridatVybaveni">
+            Přidat náhodné vybavení
         </button>@error
+    </div>
+    <div><p></p>
+        <button class="bg-fuchsia-700 rounded-md p-1" @onclick="()=> {newModel = new VybaveniVm(str, 0, DateTime.Now.AddYears(-2), DateTime.Now, Guid.NewGuid());newModel.IsInEditMode=true; isInNewMode = true;}">
+            Přidat konkrétní vybavení
+        </button>
+    </div>
     </div>
 
     <div class="grid grid-cols-6 border-b-2 border-black font-bold">
@@ -28,6 +31,21 @@
         <div class=" w-full h-full">Potřebuje revizi?</div>
     </div>
     <div>
+        @if (isInNewMode)
+        {
+            ArgumentNullException.ThrowIfNull(newModel);
+            <div class="my-1">
+            <VybaveRow Vyb="newModel" EditDoneCallback="() => {seznamVybaveni.Insert(0,newModel); isInNewMode = false;}">
+
+                <div class="flex justify-center gap-2">
+                 
+                        <button type="submit" class="twbtn bg-teal-500">Přidej</button>
+                        <button type="button" @onclick="() => isInNewMode = false" class="twbtn bg-yellow-500">Zrušit</button>
+                   
+                </div>
+            </VybaveRow>
+           </div>
+        }
 
         @foreach (VybaveniVm vyb in seznamVybaveni)
         {
@@ -35,11 +53,12 @@
                 <VybaveRow Vyb="vyb"
                        SmazEventCallback="() => seznamVybaveni.Remove(vyb)"
                        RevizeEventCallback="() => vyb.LastRevisionDateTime=DateTime.Now">
-                </VybaveRow>    
+                </VybaveRow>
             </div>
         }
     </div>
 </div>
+
 
 
 
@@ -48,6 +67,11 @@
     List<VybaveniVm> seznamVybaveni;
     string? oninput;
     string? error;
+    string str = "";
+    VybaveniVm newModel;
+    //VybaveniVm newModel = new VybaveniVm("", 0, DateTime.Now.AddYears(-2), DateTime.Now, Guid.NewGuid());
+    bool isInNewMode;
+
 
     public Vybaveni_nemocnice()
     {
@@ -79,7 +103,6 @@
         }
 
     }
-
 
 
 

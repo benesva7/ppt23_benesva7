@@ -1,6 +1,13 @@
-﻿@using Blazor.ViewModels
-@using Microsoft.AspNetCore.Components.Forms
+﻿@using Microsoft.AspNetCore.Components.Forms
+
 @if (Vyb == null) return;
+
+@{
+    @if (Vyb == null && IsInEditMode)
+        TurnOnEdit();
+
+}
+
 @if (Vyb != null && !Vyb.IsInEditMode)
 {
     <div class="py-1.5">@Vyb.Name</div>
@@ -10,7 +17,7 @@
     <div class="py-1.5">@((Vyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>
     <div class="flex justify-center gap-2">
         <!--<button class="bg-red-500 rounded-md p-1" @onclick="() => SmazEventCallback.InvokeAsync()">Smazat</button>-->
-        <button class="twbtn bg-red-500 hover:bg-red-600 " @onclick="() => SmazEventCallback.InvokeAsync()">🗙</button>
+        <button class="twbtn bg-red-500 hover:bg-red-600 " @onclick="() => SmazEventCallback.InvokeAsync()">✕</button>
         <button class="twbtn bg-blue-500 hover:bg-blue-600" @onclick="() => RevizeEventCallback.InvokeAsync()">Provést revizi</button>
         <button class="twbtn bg-yellow-400 hover:bg-yellow-500" @onclick="() => TurnOnEdit()">✏️</button>
     </div>
@@ -23,11 +30,11 @@ else if (EditVyb != null && EditVyb.IsInEditMode)
         <div class="grid grid-cols-6 ">
             <div class="p-1">
                 <InputText class="border-2 border-gray-400 " @bind-Value=@EditVyb.Name />
-                
+                    <ValidationMessage For="() => EditVyb.Name" />
             </div>
             <div class="pt-1">
                 <InputNumber class="border-2 border-gray-400 " @bind-Value=@EditVyb.Price />
-               
+               <ValidationMessage For="() => EditVyb.Price" />
             </div>
             <div class="pt-1">
                 <InputDate class="border-2 border-gray-400 " @bind-Value=@EditVyb.BoughtDateTime />
@@ -35,15 +42,24 @@ else if (EditVyb != null && EditVyb.IsInEditMode)
             </div>
             <div class="pt-1">
                 <InputDate class="border-2 border-gray-400 " @bind-Value=@EditVyb.LastRevisionDateTime />
-                
+                    <ValidationMessage For="() => EditVyb.LastRevisionDateTime" />
             </div>
             <div class="pt-1.5">@((EditVyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>
-            <div class="flex justify-center gap-2">
-                <button class="twbtn bg-green-500  hover:bg-green-600">Ok</button>
-                <button class="twbtn bg-red-500  hover:bg-red-600" type="button" @onclick="() => TurnOffEdit(false)">Zrušit</button>
+            
+                
+         
+            @if (ChildContent == null)
+            {
+                    <div class="flex justify-center gap-2">
+                        <button class="twbtn bg-green-500  hover:bg-green-600">✅</button>
+                        <button class="twbtn bg-red-500  hover:bg-red-600" type="button" @onclick="() => TurnOffEdit(false)">✕</button>
+                </div>
+            }
+            else
+            {
+                @ChildContent
+            }
             </div>
-         </div>
-            <ValidationSummary />
         </div>
         
     </EditForm>
@@ -54,6 +70,10 @@ else if (EditVyb != null && EditVyb.IsInEditMode)
     [Parameter] public EventCallback SmazEventCallback { get; set; }
     [Parameter] public EventCallback RevizeEventCallback { get; set; }
     [Parameter] public EventCallback EditDoneCallback { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool IsInEditMode { get; set; }
+
+
 
     VybaveniVm? _Vyb;
     VybaveniVm? EditVyb;
