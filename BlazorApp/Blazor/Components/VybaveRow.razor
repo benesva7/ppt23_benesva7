@@ -8,7 +8,7 @@
 
 }
 
-@if (Vyb != null && !Vyb.IsInEditMode)
+@if (Vyb != null && !IsInEditMode)
 {
     <div class="py-1.5">@Vyb.Name</div>
     <div class="py-1.5">@Vyb.Price</div>
@@ -22,46 +22,44 @@
         <button class="twbtn bg-yellow-400 hover:bg-yellow-500" @onclick="() => TurnOnEdit()">✏️</button>
     </div>
 }
-else if (EditVyb != null && EditVyb.IsInEditMode)
+else if (EditVyb != null && IsInEditMode)
 {
     <EditForm class="col-span-6" Model=EditVyb OnValidSubmit="() => TurnOffEdit(true)">
         <DataAnnotationsValidator />
         <div class="border-2 border-gray-500 p-1">
-        <div class="grid grid-cols-6 ">
-            <div class="p-1">
-                <InputText class="border-2 border-gray-400 " @bind-Value=@EditVyb.Name />
+            <div class="grid grid-cols-6 ">
+                <div class="p-1">
+                    <InputText class="border-2 border-gray-400 " @bind-Value=@EditVyb.Name />
                     <ValidationMessage For="() => EditVyb.Name" />
-            </div>
-            <div class="pt-1">
-                <InputNumber class="border-2 border-gray-400 " @bind-Value=@EditVyb.Price />
-               <ValidationMessage For="() => EditVyb.Price" />
-            </div>
-            <div class="pt-1">
-                <InputDate class="border-2 border-gray-400 " @bind-Value=@EditVyb.BoughtDateTime />
+                </div>
+                <div class="pt-1">
+                    <InputNumber class="border-2 border-gray-400 " @bind-Value=@EditVyb.Price />
+                    <ValidationMessage For="() => EditVyb.Price" />
+                </div>
+                <div class="pt-1">
+                    <InputDate class="border-2 border-gray-400 " @bind-Value=@EditVyb.BoughtDateTime />
 
-            </div>
-            <div class="pt-1">
-                <InputDate class="border-2 border-gray-400 " @bind-Value=@EditVyb.LastRevisionDateTime />
+                </div>
+                <div class="pt-1">
+                    <InputDate class="border-2 border-gray-400 " @bind-Value=@EditVyb.LastRevisionDateTime />
                     <ValidationMessage For="() => EditVyb.LastRevisionDateTime" />
-            </div>
-            <div class="pt-1.5">@((EditVyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>
-            
-                
-         
-            @if (ChildContent == null)
-            {
+                </div>
+                <div class="pt-1.5">@((EditVyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>
+
+                @if (ChildContent == null)
+                {
                     <div class="flex justify-center gap-2">
                         <button class="twbtn bg-green-500  hover:bg-green-600">✅</button>
                         <button class="twbtn bg-red-500  hover:bg-red-600" type="button" @onclick="() => TurnOffEdit(false)">✕</button>
-                </div>
-            }
-            else
-            {
-                @ChildContent
-            }
+                    </div>
+                }
+                else
+                {
+                    @ChildContent
+                }
             </div>
         </div>
-        
+
     </EditForm>
 }
 
@@ -85,7 +83,7 @@ else if (EditVyb != null && EditVyb.IsInEditMode)
         set
         {
             _Vyb = value;
-            if (value != null && value.IsInEditMode)
+            if (value != null && IsInEditMode)
             {
                 TurnOnEdit();
             }
@@ -96,7 +94,7 @@ else if (EditVyb != null && EditVyb.IsInEditMode)
     {
         if (Vyb != null)
         {
-            Vyb.IsInEditMode = true;
+            IsInEditMode = true;
             EditVyb = Vyb.Copy();
         }
     }
@@ -108,7 +106,7 @@ else if (EditVyb != null && EditVyb.IsInEditMode)
             EditVyb?.MapTo(Vyb);
         }
         if (Vyb is not null)
-            Vyb.IsInEditMode = false;
+            IsInEditMode = false;
         EditVyb = null;
         EditDoneCallback.InvokeAsync(success);
     }

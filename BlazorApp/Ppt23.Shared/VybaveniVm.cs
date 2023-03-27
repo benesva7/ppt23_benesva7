@@ -19,7 +19,7 @@ namespace Ppt23.Shared
         [CustomValidation(typeof(VybaveniVm), nameof(Validation))]
         public DateTime LastRevisionDateTime { get; set; }
         public bool IsRevisionNeeded { get => LastRevisionDateTime < DateTime.Now.AddYears(-2);}
-        public bool IsInEditMode { get; set; }
+        //public bool IsInEditMode { get; set; }
         public Guid Id { get; set; }
 
         public VybaveniVm(string Name,int Price, DateTime BoughtDateTime, DateTime LastRevisionDateTime, Guid Id)
@@ -45,7 +45,7 @@ namespace Ppt23.Shared
         public VybaveniVm Copy()
         {
             VybaveniVm to = new(Name, Price, BoughtDateTime, LastRevisionDateTime,Id);
-            to.IsInEditMode = IsInEditMode;
+            //to.IsInEditMode = IsInEditMode;
             return to;
         }
         public void MapTo(VybaveniVm? to)
