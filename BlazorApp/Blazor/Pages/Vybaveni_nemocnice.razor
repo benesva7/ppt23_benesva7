@@ -1,5 +1,14 @@
 ﻿@page "/vybaveni"
 @using Blazor.Components
+@inject HttpClient Http
+@if(@seznamVybaveni is null)
+{
+    <div class="flex items-center justify-center h-screen">
+        <div class="w-12 h-12 rounded-full animate-spin
+                    border-y-4 border-solid border-blue-900 border-t-transparent"></div>
+    </div>
+    return;
+}
 
 <div class="p-4 ">
     <div class="grid grid-cols-3 justify-evenly text-center items-center">
@@ -51,7 +60,7 @@
         {
             <div class="grid grid-cols-6 my-1 @((vyb.IsRevisionNeeded) ? "bg-red-400" : "")">
                 <VybaveRow Vyb="vyb"
-                       SmazEventCallback="() => seznamVybaveni.Remove(vyb)"
+                       SmazEventCallback="() => SmazVybaveni(vyb)"
                        RevizeEventCallback="() => vyb.LastRevisionDateTime=DateTime.Now">
                 </VybaveRow>
             </div>
@@ -64,21 +73,34 @@
 
 @code {
 
-    List<VybaveniVm> seznamVybaveni;
+    List<VybaveniVm>? seznamVybaveni;
     string? oninput;
     string? error;
     string str = "";
-    VybaveniVm newModel;
+    VybaveniVm? newModel;
     bool isInNewMode;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1000);
+        seznamVybaveni = await Http.GetFromJsonAsync<List<VybaveniVm>>("vybaveni");
+    }
 
+    async Task SmazVybaveni(VybaveniVm vyb)
+    {
+        var odpoved = await Http.DeleteAsync($"vybaveni/{vyb.Id}");
+        if (odpoved.IsSuccessStatusCode)
+            seznamVybaveni?.Remove(vyb);
+    }
+    
+    /*
     public Vybaveni_nemocnice()
     {
         seznamVybaveni = VybaveniVm.VratRandSeznam(15);
-    }
+    }*/
     public void noveVybaveni()
     {
-        seznamVybaveni.Clear();
+        seznamVybaveni?.Clear();
         seznamVybaveni = VybaveniVm.VratRandSeznam(15);
     }
     public void pridatVybaveni()
@@ -97,7 +119,7 @@
             List<VybaveniVm> List = VybaveniVm.VratRandSeznam(pocet);
             for (int i = 0; i < List.Count; i++)
             {
-                seznamVybaveni.Add(List[i]);
+                seznamVybaveni?.Insert(i,List[i]);
             }
         }
 
