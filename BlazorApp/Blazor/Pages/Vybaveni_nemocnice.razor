@@ -1,7 +1,7 @@
 ﻿@page "/vybaveni"
 @using Blazor.Components
 @inject HttpClient Http
-@if(@seznamVybaveni is null)
+@if (@seznamVybaveni is null)
 {
     <div class="flex items-center justify-center h-screen">
         <div class="w-12 h-12 rounded-full animate-spin
@@ -12,24 +12,24 @@
 
 <div class="p-4 ">
     <div class="grid grid-cols-3 justify-evenly text-center items-center">
-    <div>
-    <p>Počet vybavení: @seznamVybaveni.Count</p>
+        <div>
+            <p>Počet vybavení: @seznamVybaveni.Count</p>
             <button class="twbtn bg-green-500  hover:bg-green-600" @onclick="noveVybaveni">
-            Nový seznam
-        </button>
-    </div>
-    <div>
-        <p>Pro přidání náhodných předmětů do seznamu zadejte počet předmětů a potvrďte tlačítkem "Přidat náhodné vybavení"</p>
-        <input class="border-2 border-blue-700" type="text" @bind-value=@oninput />
+                Nový seznam
+            </button>
+        </div>
+        <div>
+            <p>Pro přidání náhodných předmětů do seznamu zadejte počet předmětů a potvrďte tlačítkem "Přidat náhodné vybavení"</p>
+            <input class="border-2 border-blue-700" type="text" @bind-value=@oninput />
             <button class="twbtn bg-amber-500 mx-2 hover:bg-amber-600" @onclick="pridatVybaveni">
-            Přidat náhodné vybavení
-        </button>@error
-    </div>
+                Přidat náhodné vybavení
+            </button>@error
+        </div>
         <div>
             <button class="twbtn bg-fuchsia-700  hover:bg-fuchsia-800" @onclick="()=> {newModel = new(str, 0, DateTime.Now, DateTime.Now, Guid.NewGuid()); isInNewMode = true;}">
-            Přidat konkrétní vybavení
-        </button>
-    </div>
+                Přidat konkrétní vybavení
+            </button>
+        </div>
     </div>
 
     <div class="grid grid-cols-6 border-b-2 border-black font-bold">
@@ -44,16 +44,16 @@
         {
             ArgumentNullException.ThrowIfNull(newModel);
             <div class=" my-1">
-            <VybaveRow IsInEditMode=true Vyb="newModel" EditDoneCallback="() => {seznamVybaveni.Insert(0,newModel); isInNewMode = false;}">
+                <VybaveRow IsInEditMode=true Vyb="newModel" EditDoneCallback="() => {VytvorVybaveni(newModel);isInNewMode = false;}">
 
-                <div class="flex justify-center gap-2">
+                    <div class="flex justify-center gap-2">
 
                         <button type="submit" class="twbtn bg-teal-500 hover:bg-teal-600">Přidat</button>
                         <button type="button" @onclick="() => isInNewMode = false" class="twbtn bg-yellow-500 hover:bg-yellow-600">Zrušit</button>
-                   
-                </div>
-            </VybaveRow>
-           </div>
+
+                    </div>
+                </VybaveRow>
+            </div>
         }
 
         @foreach (VybaveniVm vyb in seznamVybaveni)
@@ -61,7 +61,8 @@
             <div class="grid grid-cols-6 my-1 @((vyb.IsRevisionNeeded) ? "bg-red-400" : "")">
                 <VybaveRow Vyb="vyb"
                        SmazEventCallback="() => SmazVybaveni(vyb)"
-                       RevizeEventCallback="() => vyb.LastRevisionDateTime=DateTime.Now">
+                       RevizeEventCallback="() => vyb.LastRevisionDateTime=DateTime.Now"
+                       EditDoneCallback="() => UpravVybaveni(vyb)">
                 </VybaveRow>
             </div>
         }
@@ -88,11 +89,47 @@
 
     async Task SmazVybaveni(VybaveniVm vyb)
     {
-        var odpoved = await Http.DeleteAsync($"vybaveni/{vyb.Id}");
+        HttpResponseMessage odpoved = await Http.DeleteAsync($"vybaveni/{vyb.Id}");
         if (odpoved.IsSuccessStatusCode)
             seznamVybaveni?.Remove(vyb);
     }
-    
+    async Task UpravVybaveni(VybaveniVm upravene)
+    {
+        HttpResponseMessage odpoved = await Http.PutAsJsonAsync($"vybaveni/{upravene.Id}", upravene);
+
+        if (odpoved.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Item updated successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Failed to update item. Please refresh the page.");
+        }
+    }
+    async Task VytvorVybaveni(VybaveniVm nove)
+    {
+        HttpResponseMessage odpoved = await Http.PostAsJsonAsync("vybaveni", nove);
+        Console.WriteLine("post proveden");
+
+        if (odpoved.IsSuccessStatusCode)
+        {
+            VybaveniVm? vytvorene = await odpoved.Content.ReadFromJsonAsync<VybaveniVm>();
+            if (vytvorene != null)
+            {
+                nove.Id = vytvorene.Id;
+                seznamVybaveni.Insert(0, nove);
+                Console.WriteLine("Item created successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Item was created but not added to seznamVybaveni.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Failed to create item. Please refresh the page.");
+        }
+    }
     /*
     public Vybaveni_nemocnice()
     {
@@ -119,13 +156,10 @@
             List<VybaveniVm> List = VybaveniVm.VratRandSeznam(pocet);
             for (int i = 0; i < List.Count; i++)
             {
-                seznamVybaveni?.Insert(i,List[i]);
+                seznamVybaveni?.Insert(i, List[i]);
             }
         }
 
     }
-
-
-
 }
 

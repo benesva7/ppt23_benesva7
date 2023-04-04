@@ -17,8 +17,9 @@
     <div class="py-1.5">@((Vyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>
     <div class="flex justify-center gap-2">
         <!--<button class="bg-red-500 rounded-md p-1" @onclick="() => SmazEventCallback.InvokeAsync()">Smazat</button>-->
+        <button class="twbtn bg-cyan-500 hover:bg-cyan-600 "onclick="window.location.href='/vybaveni/@Vyb.Id'">🔍</button>
         <button class="twbtn bg-red-500 hover:bg-red-600 " @onclick="() => SmazEventCallback.InvokeAsync()">✕</button>
-        <button class="twbtn bg-blue-500 hover:bg-blue-600" @onclick="() => RevizeEventCallback.InvokeAsync()">Provést revizi</button>
+        <button class="twbtn bg-emerald-500 hover:bg-emerald-600" @onclick="() => RevizeEventCallback.InvokeAsync()">Provést revizi</button>
         <button class="twbtn bg-yellow-400 hover:bg-yellow-500" @onclick="() => TurnOnEdit()">✏️</button>
     </div>
 }

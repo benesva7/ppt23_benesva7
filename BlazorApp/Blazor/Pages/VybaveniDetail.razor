@@ -1,18 +1,39 @@
 ﻿@page "/vybaveni/{Id:guid}"
 @inject HttpClient Http
+@if (Vyb is null)
+{
+    <div class="flex items-center justify-center h-screen">
+        <div class="w-12 h-12 rounded-full animate-spin
+                    border-y-4 border-solid border-blue-900 border-t-transparent"></div>
+    </div>
+    return;
+}
 
-<h3>VybaveniDetail @Id</h3>
-<div class="grid grid-cols-2">
-    <div>Název</div>
-    <div>@vybaveni?.Name</div>
+<div class="p-4 ">
+    <h3 class="text-center">VybaveniDetail @Id</h3>
+    <div class="grid grid-cols-6 border-b-2 border-black font-bold">
+        <div class=" w-full h-full">Název</div>
+        <div class=" w-full h-full">Cena(Kč)</div>
+        <div class=" w-full h-full">Datum nákupu</div>
+        <div class=" w-full h-full">Datum poslední revize</div>
+        <div class=" w-full h-full">Potřebuje revizi?</div>
+    </div>
+    <div class="grid grid-cols-6 my-1">
+        <div class="py-1.5">@Vyb.Name</div>
+        <div class="py-1.5">@Vyb.Price</div>
+        <div class="py-1.5">@Vyb.BoughtDateTime.ToString("dd-MM-yyyy")</div>
+        <div class="py-1.5">@Vyb.LastRevisionDateTime.ToString("dd-MM-yyyy")</div>
+        <div class="py-1.5">@((Vyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>
+        <div class="flex justify-center">
+            <button class="twbtn bg-blue-500 hover:bg-blue-600 " onclick="window.location.href='/vybaveni'">🚪</button>
+        </div>
+    </div>
 </div>
-
 @code {
     [Parameter] public Guid Id { get; set; }
-    VybaveniVm? vybaveni;
+    VybaveniVm? Vyb;
     protected override async Task OnInitializedAsync()
     {
-        var vyb = await Http.GetFromJsonAsync<VybaveniVm>($"vybaveni/{Id}");
+        Vyb = await Http.GetFromJsonAsync<VybaveniVm>($"vybaveni/{Id}");
     }
-
 }

@@ -8,7 +8,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(corsOptions => corsOptions.AddDefaultPolicy(policy =>
     policy.WithOrigins("https://localhost:1111")
-    .WithMethods("GET", "DELETE")
+    .WithMethods("GET", "DELETE","POST","PUT")
     .AllowAnyHeader()
 ));
 
