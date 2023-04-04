@@ -13,12 +13,13 @@
     <h3 class="text-center">VybaveniDetail @Id</h3>
     <div class="grid grid-cols-6 border-b-2 border-black font-bold">
         <div class=" w-full h-full">Název</div>
-        <div class=" w-full h-full">Cena(Kč)</div>
+        <div class=" w-full h-full">Cena (Kč)</div>
         <div class=" w-full h-full">Datum nákupu</div>
         <div class=" w-full h-full">Datum poslední revize</div>
         <div class=" w-full h-full">Potřebuje revizi?</div>
     </div>
-    <div class="grid grid-cols-6 my-1">
+    
+    <div class="grid grid-cols-6 my-1 @((Vyb.IsRevisionNeeded) ? "bg-red-400" : "")">
         <div class="py-1.5">@Vyb.Name</div>
         <div class="py-1.5">@Vyb.Price</div>
         <div class="py-1.5">@Vyb.BoughtDateTime.ToString("dd-MM-yyyy")</div>
@@ -27,6 +28,7 @@
         <div class="flex justify-center">
             <button class="twbtn bg-blue-500 hover:bg-blue-600 " onclick="window.location.href='/vybaveni'">🚪</button>
         </div>
+      
     </div>
 </div>
 @code {

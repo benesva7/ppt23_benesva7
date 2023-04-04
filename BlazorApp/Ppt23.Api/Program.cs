@@ -25,7 +25,9 @@ app.UseHttpsRedirection();
 
 
 List<VybaveniVm> seznamVybaveni = VybaveniVm.VratRandSeznam(15);
+List<RevizeViewModel> seznamRevizi = RevizeViewModel.NahodnySeznam(15);
 app.MapGet("/vybaveni", () => seznamVybaveni);
+app.MapGet("/revize/{pozdrav}", () => seznamRevizi);
 
 app.MapPost("/vybaveni", (VybaveniVm prichoziModel) =>
 {

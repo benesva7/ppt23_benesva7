@@ -11,7 +11,7 @@
 @if (Vyb != null && !IsInEditMode)
 {
     <div class="py-1.5">@Vyb.Name</div>
-    <div class="py-1.5">@Vyb.Price</div>
+    <div class="py-1.5">@Vyb.Price.ToString("N0")</div>
     <div class="py-1.5">@Vyb.BoughtDateTime.ToString("dd-MM-yyyy")</div>
     <div class="py-1.5">@Vyb.LastRevisionDateTime.ToString("dd-MM-yyyy")</div>
     <div class="py-1.5">@((Vyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>

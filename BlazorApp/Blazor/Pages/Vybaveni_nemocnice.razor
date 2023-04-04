@@ -11,7 +11,7 @@
 }
 
 <div class="p-4 ">
-    <div class="grid grid-cols-3 justify-evenly text-center items-center">
+    <div class="grid grid-cols-3 justify-evenly text-center items-center my-4">
         <div>
             <p>Počet vybavení: @seznamVybaveni.Count</p>
             <button class="twbtn bg-green-500  hover:bg-green-600" @onclick="noveVybaveni">
@@ -23,7 +23,7 @@
             <input class="border-2 border-blue-700" type="text" @bind-value=@oninput />
             <button class="twbtn bg-amber-500 mx-2 hover:bg-amber-600" @onclick="pridatVybaveni">
                 Přidat náhodné vybavení
-            </button>@error
+            </button><br>@error
         </div>
         <div>
             <button class="twbtn bg-fuchsia-700  hover:bg-fuchsia-800" @onclick="()=> {newModel = new(str, 0, DateTime.Now, DateTime.Now, Guid.NewGuid()); isInNewMode = true;}">
@@ -34,7 +34,7 @@
 
     <div class="grid grid-cols-6 border-b-2 border-black font-bold">
         <div class=" w-full h-full">Název</div>
-        <div class=" w-full h-full">Cena(Kč)</div>
+        <div class=" w-full h-full">Cena (Kč)</div>
         <div class=" w-full h-full">Datum nákupu</div>
         <div class=" w-full h-full">Datum poslední revize</div>
         <div class=" w-full h-full">Potřebuje revizi?</div>
@@ -44,8 +44,8 @@
         {
             ArgumentNullException.ThrowIfNull(newModel);
             <div class=" my-1">
-                <VybaveRow IsInEditMode=true Vyb="newModel" EditDoneCallback="() => {VytvorVybaveni(newModel);isInNewMode = false;}">
-
+                <VybaveRow IsInEditMode=true Vyb="newModel" EditDoneCallback ="async () =>  { await VytvorVybaveni(newModel);isInNewMode = false;}">
+                    
                     <div class="flex justify-center gap-2">
 
                         <button type="submit" class="twbtn bg-teal-500 hover:bg-teal-600">Přidat</button>
@@ -62,7 +62,7 @@
                 <VybaveRow Vyb="vyb"
                        SmazEventCallback="() => SmazVybaveni(vyb)"
                        RevizeEventCallback="() => vyb.LastRevisionDateTime=DateTime.Now"
-                       EditDoneCallback="() => UpravVybaveni(vyb)">
+                       EditDoneCallback=" async () => await UpravVybaveni(vyb)">
                 </VybaveRow>
             </div>
         }
@@ -91,7 +91,15 @@
     {
         HttpResponseMessage odpoved = await Http.DeleteAsync($"vybaveni/{vyb.Id}");
         if (odpoved.IsSuccessStatusCode)
+        {
             seznamVybaveni?.Remove(vyb);
+            Console.WriteLine("delete hotov");
+        }
+        else
+        {
+            Console.WriteLine("delete chyba");
+        }
+
     }
     async Task UpravVybaveni(VybaveniVm upravene)
     {
@@ -99,35 +107,34 @@
 
         if (odpoved.IsSuccessStatusCode)
         {
-            Console.WriteLine("Item updated successfully.");
+            Console.WriteLine("put hotov");
         }
         else
         {
-            Console.WriteLine("Failed to update item. Please refresh the page.");
+            Console.WriteLine("put chyba");
         }
     }
     async Task VytvorVybaveni(VybaveniVm nove)
     {
         HttpResponseMessage odpoved = await Http.PostAsJsonAsync("vybaveni", nove);
-        Console.WriteLine("post proveden");
+
 
         if (odpoved.IsSuccessStatusCode)
-        {
-            VybaveniVm? vytvorene = await odpoved.Content.ReadFromJsonAsync<VybaveniVm>();
-            if (vytvorene != null)
+        {/*
+            VybaveniVm? vysledek = await odpoved.Content.ReadFromJsonAsync<VybaveniVm>();
+            if(vysledek != null)
             {
-                nove.Id = vytvorene.Id;
+                nove.Id = vysledek.Id;
                 seznamVybaveni.Insert(0, nove);
-                Console.WriteLine("Item created successfully.");
-            }
-            else
-            {
-                Console.WriteLine("Item was created but not added to seznamVybaveni.");
-            }
+        }*/
+            seznamVybaveni = await Http.GetFromJsonAsync<List<VybaveniVm>>("vybaveni");
+            StateHasChanged();
+            Console.WriteLine("post hotov");
+            
         }
         else
         {
-            Console.WriteLine("Failed to create item. Please refresh the page.");
+            Console.WriteLine("post chyba");
         }
     }
     /*
@@ -135,6 +142,8 @@
     {
         seznamVybaveni = VybaveniVm.VratRandSeznam(15);
     }*/
+
+    //TODO: upravit pro synchronizaci s api
     public void noveVybaveni()
     {
         seznamVybaveni?.Clear();
