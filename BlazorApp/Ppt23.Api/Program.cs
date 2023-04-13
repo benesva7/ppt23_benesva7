@@ -27,7 +27,6 @@ app.UseHttpsRedirection();
 List<VybaveniVm> seznamVybaveni = VybaveniVm.VratRandSeznam(15);
 List<RevizeViewModel> seznamRevizi = RevizeViewModel.NahodnySeznam(15);
 app.MapGet("/vybaveni", () => seznamVybaveni);
-app.MapGet("/revize/{pozdrav}", () => seznamRevizi);
 
 app.MapPost("/vybaveni", (VybaveniVm prichoziModel) =>
 {
@@ -68,6 +67,12 @@ app.MapGet("/vybaveni/{Id}", (Guid Id) =>
     VybaveniVm? nalezeny = seznamVybaveni.SingleOrDefault(x => x.Id == Id);
     if(nalezeny is null) { return Results.NotFound("Tato položka nebyla nalezena!!"); }
     return Results.Json(nalezeny);
+});
+app.MapGet("/revize", () => seznamRevizi);
+app.MapGet("/revize/{text}", (string text) =>
+{
+    var filtrovaneRevize = seznamRevizi.Where(x => x.Name.Contains(text)).ToList();
+    return Results.Ok(filtrovaneRevize);
 });
 
 app.Run();
