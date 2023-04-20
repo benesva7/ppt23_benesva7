@@ -24,11 +24,8 @@ jobs:
           dotnet-version: '7.x'
           include-prerelease: true
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
-
       - name: dotnet publish
-        run: dotnet publish  ${{env.DOTNET_ROOT}}/BlazorApp/Blazor.sln --configuration Release --output ${{env.PUBLISH_DIR}}
+        run: dotnet publish BlazorApp/Ppt23.Api/Ppt23.Api.csproj --configuration Release --output ${{env.PUBLISH_DIR}}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
