@@ -1,4 +1,4 @@
-using Blazor;
+using Ppt23.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
