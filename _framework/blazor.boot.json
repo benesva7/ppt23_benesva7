@@ -6,12 +6,11 @@
     "appsettings.Production.json"
   ],
   "debugBuild": false,
-  "entryAssembly": "Blazor",
+  "entryAssembly": "Ppt23.Client",
   "icuDataMode": 0,
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "Blazor.dll": "sha256-7HFrSy+74CcfTj\/Ng\/RqS555pGLWLjnltySa7my65io=",
       "Microsoft.AspNetCore.Components.dll": "sha256-mQsMaYEYV3HR86RJ+SO6PqfDZc\/k9AFRT3Rj6MxPcN4=",
       "Microsoft.AspNetCore.Components.Forms.dll": "sha256-9ovXJNX9tYQ9JOJLjs1Uxytr7rP41Ug0Ud9\/dV4MBhA=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-iR3y7G2q1Hjlo9XFCRlyBlXVnvpYOphMKMgNBElu3NA=",
@@ -27,7 +26,8 @@
       "Microsoft.Extensions.Primitives.dll": "sha256-eXvGx2jcjpTPEJoAHBsW\/VuMPbNyyU+AsuhPmkzSSRY=",
       "Microsoft.JSInterop.dll": "sha256-L85W0kGe1vzXNUYnqQARFyJyU5KutJYw6dMeZkGsS6Q=",
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-hUxOrW0i2d4N\/3At6wRqsDMpya9fFCtdE6YcQJb8d40=",
-      "Ppt23.Shared.dll": "sha256-ApE4FnVR0OPABW2wNEO9DeORkTiZt56lAN6tNLmqT6c=",
+      "Ppt23.Client.dll": "sha256-JR0PiL+uLBabUCd6MkDY9HUzBuqtvw5vZU16FteJAIA=",
+      "Ppt23.Shared.dll": "sha256-GEGyPz7l6Wfv0V69VaXbWF4h9uM9mhXYGSN9StyModo=",
       "System.Collections.Concurrent.dll": "sha256-dqIK5YX2KzH3fhCalbPxjJlMeE3RfTuTvsJ9yC7Shy0=",
       "System.Collections.dll": "sha256-7kiVDcwnjVylk4ICJyQabkeB9OZ3RzRJ+oXpwrH12Do=",
       "System.Collections.NonGeneric.dll": "sha256-0vuZG8keqJhQbQXbLpMZEwD42DqesnohUhMGNOkM11g=",
