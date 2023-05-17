@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 var corsAllowedOrigin = builder.Configuration.GetSection("CorsAllowedOrigins").Get<string[]>();
 ArgumentNullException.ThrowIfNull(corsAllowedOrigin);
+string? dbPath = builder.Configuration.GetValue<string>("dbPath");
 
 builder.Services.AddCors(corsOptions => corsOptions.AddDefaultPolicy(policy =>
     policy.WithOrigins(corsAllowedOrigin)
@@ -22,6 +23,11 @@ builder.Services.AddCors(corsOptions => corsOptions.AddDefaultPolicy(policy =>
 
 var app = builder.Build();
 app.UseCors();
+
+app.Services.CreateScope().ServiceProvider
+  .GetRequiredService<PptDbContext>()
+  .Database.Migrate();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
