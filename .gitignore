@@ -36,3 +36,6 @@ msbuild.wrn
 # Visual Studio 2015
 .vs/
 /Ppt23.Api/Ppt23.db
+/Ppt23.Api/Ppt23.db-shm
+/Ppt23.Api/Ppt23.db-wal
+/Ppt23.Api/Ppt23.db
