@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ppt23.Api.Data;
 
@@ -10,9 +11,11 @@ using Ppt23.Api.Data;
 namespace Ppt23.Api.Migrations
 {
     [DbContext(typeof(PptDbContext))]
-    partial class PptDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230520105534_cv12")]
+    partial class cv12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -27,6 +30,7 @@ namespace Ppt23.Api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("VybaveniId")
@@ -52,8 +56,8 @@ namespace Ppt23.Api.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 

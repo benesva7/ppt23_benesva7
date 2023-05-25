@@ -22,13 +22,14 @@ namespace Ppt23.Shared
         //public bool IsInEditMode { get; set; }
         public Guid Id { get; set; }
 
-        public VybaveniVm(string Name,int Price, DateTime BoughtDateTime, DateTime LastRevisionDateTime, Guid Id)
+        public VybaveniVm()
         {
 
-            this.Name = Name;
-            this.Price = Price;
-            this.BoughtDateTime = BoughtDateTime;
-            this.LastRevisionDateTime = LastRevisionDateTime; 
+            this.Name = RandomString();
+            this.Price = Random.Shared.Next(10000001);
+            this.BoughtDateTime = RandomDay(new DateTime(2000, 1, 1));
+            this.LastRevisionDateTime = RandomDay(DateTime.Now.AddYears(-4));
+            this.Id = Guid.NewGuid();
             if (LastRevisionDateTime < this.BoughtDateTime)
             {
                 this.BoughtDateTime = LastRevisionDateTime;
@@ -39,12 +40,16 @@ namespace Ppt23.Shared
                 this.BoughtDateTime = this.BoughtDateTime;
                 this.LastRevisionDateTime = LastRevisionDateTime;
             }
-            this.Id = Id;
+            
 
         }
         public VybaveniVm Copy()
         {
-            VybaveniVm to = new(Name, Price, BoughtDateTime, LastRevisionDateTime,Id);
+            VybaveniVm to = new();
+            to.Name = Name;
+            to.BoughtDateTime=BoughtDateTime;
+            to.LastRevisionDateTime=LastRevisionDateTime;
+            to.Price = Price;
             //to.IsInEditMode = IsInEditMode;
             return to;
         }
@@ -55,7 +60,7 @@ namespace Ppt23.Shared
             to.Price = Price;
             to.BoughtDateTime = BoughtDateTime;
             to.LastRevisionDateTime = LastRevisionDateTime;
-            to.Id = Id;
+           
         }
         public static ValidationResult? Validation(DateTime LastRevisionDatetime, ValidationContext validationContext)
         {
@@ -84,11 +89,11 @@ namespace Ppt23.Shared
                 DateTime LastRevisionDateTime = RandomDay(DateTime.Now.AddYears(-4));
                 Guid Id = Guid.NewGuid();
 
-                list.Add(new VybaveniVm(Name,Price, BoughtDateTime, LastRevisionDateTime,Id));
+                list.Add(new VybaveniVm());
             }
             return list;
             }
-        private static DateTime RandomDay(DateTime start)
+        public static DateTime RandomDay(DateTime start)
         {
             //DateTime start = new DateTime(2000, 1, 1);
             int range = (DateTime.Today - start).Days;

@@ -11,31 +11,47 @@
 
 <div class="p-4 ">
     <h3 class="text-center">VybaveniDetail @Id</h3>
-    <div class="grid grid-cols-6 border-b-2 border-black font-bold">
+    <div class="grid grid-cols-5 border-b-2 border-black font-bold">
         <div class=" w-full h-full">Název</div>
         <div class=" w-full h-full">Cena (Kč)</div>
         <div class=" w-full h-full">Datum nákupu</div>
-        <div class=" w-full h-full">Datum poslední revize</div>
-        <div class=" w-full h-full">Potřebuje revizi?</div>
+        <div class=" w-full h-full">Počet revizí </div>
     </div>
     
-    <div class="grid grid-cols-6 my-1 @((Vyb.IsRevisionNeeded) ? "bg-red-400" : "")">
+    <div class="grid grid-cols-5 my-1">
         <div class="py-1.5">@Vyb.Name</div>
-        <div class="py-1.5">@Vyb.Price</div>
+        <div class="py-1.5">@Vyb.Price.ToString("N0")</div>
         <div class="py-1.5">@Vyb.BoughtDateTime.ToString("dd-MM-yyyy")</div>
-        <div class="py-1.5">@Vyb.LastRevisionDateTime.ToString("dd-MM-yyyy")</div>
-        <div class="py-1.5">@((Vyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>
+        <div class="py-1.5">@seznamRevizi.Count</div>
         <div class="flex justify-center">
             <button class="twbtn bg-blue-500 hover:bg-blue-600 " onclick="window.location.href='/vybaveni'">🚪</button>
         </div>
-      
     </div>
+    @if (seznamRevizi.Count != 0)
+    {
+
+        @foreach (var item in seznamRevizi)
+        {
+
+            <div>Revize číslo @pocetRevizi: @item.DateTime.ToString("dd/MM/yyyy")</div>
+            pocetRevizi++;
+        }
+    }
+    else
+    {
+        <div>žádná revize</div>
+    }
 </div>
 @code {
     [Parameter] public Guid Id { get; set; }
     VybaveniVm? Vyb;
+    List<RevizeViewModel>? seznamRevizi;
+    int pocetRevizi = 1;
+
     protected override async Task OnInitializedAsync()
     {
+        await Task.Delay(1000);
         Vyb = await Http.GetFromJsonAsync<VybaveniVm>($"vybaveni/{Id}");
+        seznamRevizi = await Http.GetFromJsonAsync<List<RevizeViewModel>>($"{Vyb.Id}");
     }
 }

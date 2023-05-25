@@ -16,7 +16,6 @@
     <div class="py-1.5">@Vyb.LastRevisionDateTime.ToString("dd-MM-yyyy")</div>
     <div class="py-1.5">@((Vyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>
     <div class="flex justify-center gap-2">
-        <!--<button class="bg-red-500 rounded-md p-1" @onclick="() => SmazEventCallback.InvokeAsync()">Smazat</button>-->
         <button class="twbtn bg-cyan-500 hover:bg-cyan-600 "onclick="window.location.href='vybaveni/@Vyb.Id'">🔍</button>
         <button class="twbtn bg-red-500 hover:bg-red-600 " @onclick="() => SmazEventCallback.InvokeAsync()">✕</button>
         <button class="twbtn bg-emerald-500 hover:bg-emerald-600" @onclick="() => RevizeEventCallback.InvokeAsync()">Provést revizi</button>
@@ -33,6 +32,7 @@ else if (EditVyb != null && IsInEditMode)
                     <InputText class="border-2 border-gray-400 " @bind-Value=@EditVyb.Name />
                     <ValidationMessage For="() => EditVyb.Name" />
                 </div>
+
                 <div class="pt-1">
                     <InputNumber class="border-2 border-gray-400 " @bind-Value=@EditVyb.Price />
                     <ValidationMessage For="() => EditVyb.Price" />

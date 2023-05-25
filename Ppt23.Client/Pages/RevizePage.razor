@@ -7,15 +7,21 @@
 <div>
     <input class="border" type="text" @bind-value=vyhledavaniString />
     <button @onclick="() => VyhledavaniClick()" type="button" class="twbtn bg-blue-500  hover:bg-blue-600">Vyhledej</button>
-    @if (seznamReviziPoVyhledani is not null)
+  
+    @if(seznamRevizi is not null)
     {
-
-        <div>
-            @foreach (var rev in seznamReviziPoVyhledani)
-            {
-                <div>Id: @rev.Id     Jmeno: @rev.Name</div>
-            }
-        </div>
+    <div>
+        
+        @foreach (var rev in seznamRevizi)
+        {
+            <div>Id revize: @rev.Id  </div>
+            <div>Nazev: @rev.Name</div>
+            <div>Posledni revize: @rev.DateTime</div>
+            <div>Id Vybaveni: @rev.VybaveniId </div>
+            <hr />
+        }
+        
+    </div>
     }
     else
     {
@@ -26,10 +32,19 @@
 @code {
     [Parameter] public string pozdrav { get; set; } = "";
     string vyhledavaniString = "";
-    List<RevizeViewModel>? seznamReviziPoVyhledani;
+    List<RevizeViewModel>? seznamRevizi;
+    
+  
+
+    protected override async Task OnInitializedAsync()
+    {
+        seznamRevizi = await Http.GetFromJsonAsync<List<RevizeViewModel>>($"revize");
+      
+    }
 
     async Task VyhledavaniClick()
     {
-        seznamReviziPoVyhledani = await Http.GetFromJsonAsync<List<RevizeViewModel>>($"revize/{vyhledavaniString}");
+        seznamRevizi = await Http.GetFromJsonAsync<List<RevizeViewModel>>($"revize/{vyhledavaniString}");
+        
     }
 }
