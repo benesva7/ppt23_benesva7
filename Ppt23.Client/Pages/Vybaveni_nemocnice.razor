@@ -69,7 +69,8 @@ else{
                     <VybaveRow Vyb="vyb"
                        SmazEventCallback="() => SmazVybaveni(vyb)"
                        RevizeEventCallback="async () => {vyb.LastRevisionDateTime=DateTime.Now; await UpravVybaveni(vyb);}"
-                       EditDoneCallback="async () =>  await UpravVybaveni(vyb)">
+                       EditDoneCallback="async () =>  await UpravVybaveni(vyb)"
+                       UkonEventCallback="async () => await VytvorUkon(vyb)">
                 </VybaveRow>
             </div>
         }
@@ -84,8 +85,8 @@ else{
     List<VybaveniVm>? seznamVybaveni;
     string? oninput;
     string? error;
-    string str = "";
     VybaveniVm? newModel;
+    UkonyVm? ukonyVm;
     bool isInNewMode;
 
     protected override async Task OnInitializedAsync()
@@ -145,6 +146,16 @@ else{
         {
             Console.WriteLine("post chyba");
         }
+    }
+    public async Task VytvorUkon(VybaveniVm nove)
+    {
+        var id = nove.Id;
+        ukonyVm = new UkonyVm
+            {
+                Name = VybaveniVm.RandomString(),
+                ActionDateTime = DateTime.Now
+            };
+        HttpResponseMessage odpoved = await Http.PostAsJsonAsync<UkonyVm>($"ukony/{id}", ukonyVm);
     }
     /*
     public Vybaveni_nemocnice()

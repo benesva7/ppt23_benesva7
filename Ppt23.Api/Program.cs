@@ -135,7 +135,6 @@ app.MapGet("/vybaveni/{Id}", (Guid Id, PptDbContext db) =>
 app.MapGet("/revize", (PptDbContext db) =>
 {
     var Revize = db.Revizes.ToList();
-
     return Revize;
 
 });
@@ -147,10 +146,24 @@ app.MapGet("/revize/{text}", (string text, PptDbContext db) =>
     return Results.Ok(filtrovaneRevize);
 });
 
-app.MapGet("{Id}", (Guid Id, PptDbContext db) =>   /*Pomocí ID získáme z tabulky revizes všechny revize*/
+app.MapGet("{Id}", (Guid Id, PptDbContext db) =>   
 {
     var nalezeny = db.Revizes.Where(r => r.VybaveniId == Id).ToList();
     return nalezeny;
+});
+app.MapGet("/ukony/{Id}", (Guid Id, PptDbContext db) =>   
+{
+    var nalezeny = db.Ukonys.Where(r => r.VybaveniId == Id).ToList();
+    return nalezeny;
+});
+app.MapPost("/ukony/{Id}", (Guid Id, UkonyVm prichoziModel, PptDbContext db) => 
+{
+    var en = prichoziModel.Adapt<Ukony>();
+    prichoziModel.Id = Guid.Empty;
+    en.VybaveniId = Id;
+    db.Ukonys.Add(en);
+    db.SaveChanges();
+    return en.Id;
 });
 
 await app.Services.CreateScope().ServiceProvider.GetRequiredService<SeedingData>().SeedData();

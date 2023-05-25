@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 
+
 @if (Vyb == null) return;
 
 @{
@@ -15,12 +16,14 @@
     <div class="py-1.5">@Vyb.BoughtDateTime.ToString("dd-MM-yyyy")</div>
     <div class="py-1.5">@Vyb.LastRevisionDateTime.ToString("dd-MM-yyyy")</div>
     <div class="py-1.5">@((Vyb.IsRevisionNeeded) ? "Ano" : "Ne")</div>
-    <div class="flex justify-center gap-2">
-        <button class="twbtn bg-cyan-500 hover:bg-cyan-600 "onclick="window.location.href='vybaveni/{@Vyb.Id}'">🔍</button>
+    <div class="flex justify-end gap-2 place-items-center">
+        <a class="twbtn bg-blue-700 hover:bg-blue-800" href="vybaveni/{@Vyb.Id}">🔍</a>
         <button class="twbtn bg-red-500 hover:bg-red-600 " @onclick="() => SmazEventCallback.InvokeAsync()">✕</button>
-        <button class="twbtn bg-emerald-500 hover:bg-emerald-600" @onclick="() => RevizeEventCallback.InvokeAsync()">Provést revizi</button>
+        <button class="twbtn bg-emerald-500 hover:bg-emerald-600 whitespace-nowrap" @onclick="() => RevizeEventCallback.InvokeAsync()">Provést revizi</button>
         <button class="twbtn bg-yellow-400 hover:bg-yellow-500" @onclick="() => TurnOnEdit()">✏️</button>
+        <button class="twbtn bg-sky-500 hover:bg-sky-600" @onclick="() => UkonEventCallback.InvokeAsync()">Použít</button>
     </div>
+  
 }
 else if (EditVyb != null && IsInEditMode)
 {
@@ -69,6 +72,7 @@ else if (EditVyb != null && IsInEditMode)
     [Parameter] public EventCallback SmazEventCallback { get; set; }
     [Parameter] public EventCallback RevizeEventCallback { get; set; }
     [Parameter] public EventCallback EditDoneCallback { get; set; }
+    [Parameter] public EventCallback UkonEventCallback { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public bool IsInEditMode { get; set; }
 
