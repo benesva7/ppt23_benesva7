@@ -128,7 +128,7 @@ app.MapPut("/vybaveni/{Id}", (VybaveniVm upravenyModel, Guid Id, PptDbContext db
 
 app.MapGet("/vybaveni/{Id}", (Guid Id, PptDbContext db) =>
 {
-    var nalezeny = db.Vybavenis.SingleOrDefault(x => x.Id == Id);
+    var nalezeny = db.Vybavenis.Include(x => x.Revizes).Include(x=>x.Ukonys).ThenInclude(x => x.Pracovnik).SingleOrDefault(x => x.Id == Id);
     if (nalezeny is null) { return Results.NotFound("Tato položka nebyla nalezena!!"); }
     return Results.Json(nalezeny);
 });
@@ -151,10 +151,30 @@ app.MapGet("{Id}", (Guid Id, PptDbContext db) =>
     var nalezeny = db.Revizes.Where(r => r.VybaveniId == Id).ToList();
     return nalezeny;
 });
+app.MapDelete("/revize/{Id}", (Guid Id, PptDbContext db) =>
+{
+    var en = db.Revizes.SingleOrDefault(x => x.Id == Id);
+    if (en == null)
+        return Results.NotFound("Tato položka nebyla nalezena!!");
+    db.Revizes.Remove(en);
+    db.SaveChanges();
+    return Results.Ok();
+
+});
 app.MapGet("/ukony/{Id}", (Guid Id, PptDbContext db) =>   
 {
     var nalezeny = db.Ukonys.Where(r => r.VybaveniId == Id).ToList();
     return nalezeny;
+});
+app.MapDelete("/ukony/{Id}", (Guid Id, PptDbContext db) =>
+{
+    var en = db.Ukonys.SingleOrDefault(x => x.Id == Id);
+    if (en == null)
+        return Results.NotFound("Tato položka nebyla nalezena!!");
+    db.Ukonys.Remove(en);
+    db.SaveChanges();
+    return Results.Ok();
+
 });
 app.MapPost("/ukony/{Id}", (Guid Id, UkonyVm prichoziModel, PptDbContext db) => 
 {

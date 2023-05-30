@@ -41,6 +41,28 @@ namespace Ppt23.Api.Data
                     db.Revizes.Add(novaRevize);
 
                 }
+                int toSkip = Random.Shared.Next(0, db.Pracovniks.Count());
+                var pracovnik = db.Pracovniks.Skip(toSkip).Take(1).First();
+                foreach (var num in Enumerable.Range(0, Random.Shared.Next(0, 20)))
+                {
+
+                    Ukony ukon = new()
+                    {
+                        Name = VybaveniVm.RandomString(),
+                        ActionDateTime = DateTime.Now,
+                        PracovnikId = pracovnik.Id,
+                        Pracovnik = pracovnik
+                };
+                    db.Ukonys.Add(ukon);
+                    
+                }
+                foreach (var num in Enumerable.Range(0, Random.Shared.Next(0, 20)))
+                {
+                    Pracovnik pracovni = new Pracovnik();
+                   
+
+                db.Pracovniks.Add(pracovni);
+                }
             }
 
             await db.SaveChangesAsync();

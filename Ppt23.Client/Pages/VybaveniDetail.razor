@@ -42,9 +42,10 @@
 
                 @foreach (var item in seznamRevizi)
                 {
-                    <div class="grid grid-cols-2">
+                    <div class="grid grid-cols-3 place-items-center">
                         <div>Revize číslo: @pocetRevizi</div>
                         <div>Provedena: @item.DateTime</div>
+                        <button class="twbtn bg-red-500 hover:bg-red-600" @onclick="() => SmazatRevizi(item)">✕</button>
                     </div>
                     pocetRevizi++;
                 }
@@ -61,9 +62,11 @@
                 @foreach (var item in seznamUkonu)
                 {
 
-                    <div class="grid grid-cols-2">
+                    <div class="grid grid-cols-4 place-items-center">
                         <div>Název úkonu: @item.Name </div>
                         <div>Provedeno: @item.ActionDateTime</div>
+                        <div>Jmeno pracovnika: @item.PracovnikName </div>
+                        <button class="twbtn bg-red-500 hover:bg-red-600 place-items-center" @onclick="() => SmazatUkon(item)">✕</button>
                     </div>
                 }
             }
@@ -87,5 +90,34 @@
         Vyb = await Http.GetFromJsonAsync<VybaveniVm>($"vybaveni/{Id}");
         seznamRevizi = await Http.GetFromJsonAsync<List<RevizeViewModel>>($"{Vyb.Id}");
         seznamUkonu = await Http.GetFromJsonAsync<List<UkonyVm>>($"ukony/{Vyb.Id}");
+    }
+    async Task SmazatRevizi(RevizeViewModel revize)
+    {
+        if (Vyb == null) return;
+        var res = await Http.DeleteAsync($"revize/{revize.Id}");
+        if (res.IsSuccessStatusCode)
+        {
+            seznamRevizi?.Remove(revize);
+            pocetRevizi = 1;
+            Console.WriteLine("delete hotov");
+        }
+        else
+        {
+            Console.WriteLine("delete chyba");
+        }
+    }
+    async Task SmazatUkon(UkonyVm ukon)
+    {
+        if (Vyb == null) return;
+        var res = await Http.DeleteAsync($"ukony/{ukon.Id}");
+        if (res.IsSuccessStatusCode)
+        {
+            seznamUkonu?.Remove(ukon);
+            Console.WriteLine("delete hotov");
+        }
+        else
+        {
+            Console.WriteLine("delete chyba");
+        }
     }
 }

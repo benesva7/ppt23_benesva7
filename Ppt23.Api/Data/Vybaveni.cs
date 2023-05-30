@@ -15,7 +15,7 @@ namespace Ppt23.Api.Data
     public DateTime BoughtDateTime { get; set; }
 
     public List<Revize> Revizes { get; set; } = new();
+    public List<Ukony> Ukonys { get; set; } = new();
 
-    
     }
 }

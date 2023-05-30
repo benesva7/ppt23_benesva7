@@ -9,5 +9,6 @@ namespace Ppt23.Api.Data
         public DateTime DateTime { get; set; }
         public Guid VybaveniId { get; set; }
         public Vybaveni Vybaveni { get; set; } = null!;
+        
     }
 }
